@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+</head>
+<body>
+    <h1>Blog</h1>
+    {% for i in posts %}
+        <hr>
+        <h3>title : [{{ i.pk }}] {{ i.title }}</h3>
+        <p>content : {{ i.content }}</p>
+        <p>date : {{ i.created_at }}</p>
+    {% endfor %}
+</body>
+</html>
