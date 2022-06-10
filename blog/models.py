@@ -17,5 +17,5 @@ class Post(models.Model):
 
     # author : 추후 작성 예정
 
-    def __str__(self):
+    def __str__(self): # __str__ : 출력 시 문자열로 나옴
         return f'[{self.pk}] {self.title}' # f'{}' -> 포메팅인가..?
