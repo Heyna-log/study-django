@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'blog',
+    'single_pages',
 ]
 
 MIDDLEWARE = [
@@ -105,11 +108,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul' # 한국 시간 사용
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False # False : TIME_ZONE을 사용하지 않겠다는 의미
 
 
 # Static files (CSS, JavaScript, Images)
