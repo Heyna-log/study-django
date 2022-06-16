@@ -18,5 +18,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('blog/', include('blog.urls'))
+    path('blog/', include('blog.urls')), # 'blog/'로 시작되는 url들은 'blog.urls'(blog폴더 안의 urls.py)에 있는 매핑 사용
 ]
+# 참고 [django App url 매핑] http://pythonstudy.xyz/python/article/311-URL-%EB%A7%A4%ED%95%91
