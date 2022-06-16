@@ -8,7 +8,8 @@
     <h1>Blog</h1>
     {% for i in posts %}
         <hr>
-        <h3>title : [{{ i.pk }}] {{ i.title }}</h3>
+<!--        <h3><a href="{{ i.pk }}">title : [{{ i.pk }}] {{ i.title }}</a></h3>-->
+        <h3><a href="{{ i.get_absolute_url }}">title : [{{ i.pk }}] {{ i.title }}</a></h3> <!-- .get_absolute_url : 장고에서 기본 제공. 하지만 models.py에서 정의를 해주어야 함 -->
         <p>content : {{ i.content }}</p>
         <p>date : {{ i.created_at }}</p>
     {% endfor %}

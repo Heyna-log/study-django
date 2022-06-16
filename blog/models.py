@@ -19,3 +19,6 @@ class Post(models.Model):
 
     def __str__(self): # __str__ : 출력 시 문자열로 나옴
         return f'[{self.pk}] {self.title}' # f'{}' -> 포메팅인가..?
+
+    def get_absolute_url(self): # 각 포스트 고유의 url 생성 (장고에서 기본 제공하는 기능)
+        return f'/blog/{self.pk}/'
