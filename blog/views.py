@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Post
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 
 ## CBV(Class Based View)
@@ -25,13 +25,20 @@ class PostList(ListView):
 #     )
 
 
-def single_post_page(request, pk):
-    post = Post.objects.get(pk=pk)
+## CBV(Class Based View)
+class PostDetail(DetailView):
+    model = Post
+    template_name = 'blog/single_page.html' # 기본 template name은 model명_detail(post_detail)이지만 이렇게 따로 지정해 줄 수도 있음
 
-    return render(
-        request,
-        'blog/single_page.html',
-        {
-            'post': post,
-        }
-    )
+
+## FBV(Function Based View)
+# def single_post_page(request, pk):
+#     post = Post.objects.get(pk=pk)
+#
+#     return render(
+#         request,
+#         'blog/single_page.html',
+#         {
+#             'post': post,
+#         }
+#     )
