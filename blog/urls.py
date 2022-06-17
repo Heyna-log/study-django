@@ -10,5 +10,6 @@ urlpatterns = [
         # uuid : UUID를 가리키며, 모든 문자가 소문자이어야 하고 대시(-)가 포함되어야 함. 이 converter는 uuid.UUID 객체를 리턴함.
         # path : 경로에 사용되는 슬래쉬(/)를 포함하는 문자열 리턴.
     path('<int:pk>/', views.single_post_page), # 'blog/pk(int형)/' url일때 blog.views.single_post_page 함수 호출
-    path('', views.index), # blog.views.index 함수 호출
+    # path('', views.index), # blog.views.index 함수 호출
+    path('', views.PostList.as_view()) # CBV
 ]

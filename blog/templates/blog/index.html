@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <title>Blog</title>
 </head>
-<body>
-    <h1>Blog</h1>
-    {% for i in posts %}
-        <hr>
-<!--        <h3><a href="{{ i.pk }}">title : [{{ i.pk }}] {{ i.title }}</a></h3>-->
-        <h3><a href="{{ i.get_absolute_url }}">title : [{{ i.pk }}] {{ i.title }}</a></h3> <!-- .get_absolute_url : 장고에서 기본 제공. 하지만 models.py에서 정의를 해주어야 함 -->
-        <p>content : {{ i.content }}</p>
-        <p>date : {{ i.created_at }}</p>
-    {% endfor %}
-</body>
+    <body>
+        <h1>Blog</h1>
+        {% for i in post_list %}
+            <hr>
+    <!--        <h3><a href="{{ i.pk }}">title : [{{ i.pk }}] {{ i.title }}</a></h3>-->
+            <h3><a href="{{ i.get_absolute_url }}">title : [{{ i.pk }}] {{ i.title }}</a></h3> <!-- .get_absolute_url : 장고에서 기본 제공. 하지만 models.py에서 정의를 해주어야 함 -->
+            <p>content : {{ i.content }}</p>
+            <p>date : {{ i.created_at }}</p>
+        {% endfor %}
+    </body>
 </html>
