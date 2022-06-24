@@ -29,7 +29,7 @@ class PostList(ListView):
 ## CBV(Class Based View)
 class PostDetail(DetailView):
     model = Post
-    template_name = 'blog/single_page.html' # 기본 template name은 model명_detail(post_detail)이지만 이렇게 따로 지정해 줄 수도 있음
+    # template_name = 'blog/post_detail.html' # 기본 template name은 model명_detail(post_detail)이지만 이렇게 따로 지정해 줄 수도 있음
     # context_object_name = : template에서 사용되는 context 변수명을 바꿔줄 수 있다
 
 
@@ -39,7 +39,7 @@ class PostDetail(DetailView):
 #
 #     return render(
 #         request,
-#         'blog/single_page.html',
+#         'blog/post_detail.html',
 #         {
 #             'post': post,
 #         }

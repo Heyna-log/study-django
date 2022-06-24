@@ -8,7 +8,7 @@
 </head>
     <body>
         <h1>Blog</h1>
-        {% for i in post_list %} <!-- ListView에서는 기본적으로 'model명' + '_list'를 변수명으로 사용 -->
+        {% for i in post_list %} <!-- ListView에서는 기본적으로 'model명' + '_list'를 context 변수명으로 사용 -->
             <hr>
     <!--        <h3><a href="{{ i.pk }}">title : [{{ i.pk }}] {{ i.title }}</a></h3>-->
             <h3><a href="{{ i.get_absolute_url }}">title : [{{ i.pk }}] {{ i.title }}</a></h3> <!-- .get_absolute_url : 장고에서 기본 제공. 하지만 models.py에서 정의를 해주어야 함 -->
