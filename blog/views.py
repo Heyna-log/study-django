@@ -7,7 +7,7 @@ from django.views.generic import ListView, DetailView
 class PostList(ListView):
     model = Post
     ordering = '-pk'
-    template_name = 'blog/index.html' # 기본 template name은 model명_list(post_list)이지만 이렇게 따로 지정해줄 수도 있음
+    # template_name = 'blog/post_list.html' # 기본 template name은 model명_list(post_list)이지만 이렇게 따로 지정해줄 수도 있음
     # context_object_name = : template에서 사용되는 context 변수명을 바꿔줄 수 있다
 
 
@@ -19,7 +19,7 @@ class PostList(ListView):
 #
 #     return render(
 #         request,
-#         'blog/index.html',
+#         'blog/post_list.html',
 #         {
 #             'posts': posts,
 #         }
