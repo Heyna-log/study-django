@@ -16,9 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls')), # 'blog/'로 시작되는 url들은 'blog.urls'(blog폴더 안의 urls.py)에 있는 매핑 사용
     path('', include('single_pages.urls')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 # 참고 [django App url 매핑] http://pythonstudy.xyz/python/article/311-URL-%EB%A7%A4%ED%95%91

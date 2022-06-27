@@ -5,12 +5,19 @@ class Post(models.Model):
     # CharField : 텍스트가 짧을 때
     # max_length : 글자 최대 길이
     title = models.CharField(max_length=50)
+
     # 내용
     # TextField : 텍스트가 길 때
     content = models.TextField()
+
+    # 이미지
+    #blank=True : null 허용
+    head_image = models.ImageField(upload_to='blog/images/%y/%m/%d/', blank=True)
+
     # 작성일
     # auto_now_add=True : 새로 생성될 때 현재시간을 자동으로 입력
     created_at = models.DateTimeField(auto_now_add=True)
+
     # 수정일
     # auto_now=True : 이미 생성되어 있고 업데이트하는 경우 수정할 때의 현재 시간을 자동으로 입력
     updated_at = models.DateTimeField(auto_now=True)
