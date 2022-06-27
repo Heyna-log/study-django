@@ -7,6 +7,10 @@
     <link href="{% static 'blog/css/index.css' %}" rel="stylesheet" type="text/css">
 </head>
     <body>
+        <nav>
+            <a href="/">main</a>
+            <a href="/about_me/">About Me</a>
+        </nav>
         <h1>Blog</h1>
         {% for i in post_list %} <!-- ListView에서는 기본적으로 'model명' + '_list'를 context 변수명으로 사용 -->
             <hr>
