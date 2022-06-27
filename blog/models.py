@@ -11,8 +11,12 @@ class Post(models.Model):
     content = models.TextField()
 
     # 이미지
-    #blank=True : null 허용
+    # blank=True : null 허용
+    # upload_to='blog/images/%y/%m/%d/' : blog/images/년/월/일 경로에 파일 저장
     head_image = models.ImageField(upload_to='blog/images/%y/%m/%d/', blank=True)
+
+    # 파일 업로드
+    file_upload = models.FileField(upload_to='blog/images/%y/%m/%d/', blank=True)
 
     # 작성일
     # auto_now_add=True : 새로 생성될 때 현재시간을 자동으로 입력
