@@ -15,6 +15,8 @@
     <!-- DetailView에서는 기본적으로 'model명'을 context 변수명으로 사용 -->
     {% if post.head_image %}
         <img src="{{ post.head_image.url }}">
+    {% else %}
+        <img src="https://picsum.photos/seed/{{ post.pk }}/500/300"> <!-- 저장된 이미지가 없으면 랜덤 이미지 보여주기 / 참고 : https://picsum.photos/ -->
     {% endif %}
     <h1>{{ post.title }}</h1>
     <h3>{{ post.created_at }}</h3>

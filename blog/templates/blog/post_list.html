@@ -17,6 +17,8 @@
             <!--<h3><a href="{{ i.pk }}">title : [{{ i.pk }}] {{ i.title }}</a></h3>-->
             {% if i.head_image %}
                 <img src="{{ i.head_image.url }}">
+            {% else %}
+                <img src="https://picsum.photos/seed/{{ i.pk }}/500/300"> <!-- 저장된 이미지가 없으면 랜덤 이미지 보여주기 / 참고 : https://picsum.photos/ -->
             {% endif %}
             <h3><a href="{{ i.get_absolute_url }}">title : [{{ i.pk }}] {{ i.title }}</a></h3> <!-- .get_absolute_url : 장고에서 기본 제공. 하지만 models.py에서 정의를 해주어야 함 -->
             <p>content : {{ i.content }}</p>
