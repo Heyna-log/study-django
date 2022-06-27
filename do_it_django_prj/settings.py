@@ -122,7 +122,7 @@ USE_TZ = False # False : TIME_ZONE을 사용하지 않겠다는 의미
 STATIC_URL = 'static/'
 
 MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, '_media')
+MEDIA_ROOT = os.path.join(BASE_DIR, '_media') # media 파일들이 내부에 어떤 곳으로 저장되는 지 알려줌
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
