@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <title>{{ post.title }} - Blog</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <!-- Navigation -->
@@ -67,6 +70,27 @@
 
             <!-- Post Content -->
             <p>{{ post.content }}</p>
+
+            <!-- File Download Button -->
+            {% if post.file_upload %}
+                <a href="{{ post.file_upload.url }}" class="btn btn-outline-primary" role="button" download>
+                    Download :
+                    {% if post.get_file_ext == 'xlsx' or post.get_file_ext == 'xls' %}
+                        <i class="fa-regular fa-file-excel"></i>
+                    {% elif post.get_file_ext == 'docx' %}
+                        <i class="fa-regular fa-file-word"></i>
+                    {% elif post.get_file_ext == 'pdf' %}
+                        <i class="fa-regular fa-file-pdf"></i>
+                    {% elif post.get_file_ext == 'png' or post.get_file_ext == 'jpg' or post.get_file_ext == 'jpeg' or post.get_file_ext == 'svg' %}
+                        <i class="fa-regular fa-image"></i>
+                    {% elif post.get_file_ext == 'csv' %}
+                        <i class="fa-regular fa-file-csv"></i>
+                    {% else %}
+                        <i class="fa-regular fa-file-lines"></i>
+                    {% endif %}
+                    {{ post.get_file_name }}
+                </a>
+            {% endif %}
             <hr>
             <!-- Comments Form -->
             <div class="card my-4">

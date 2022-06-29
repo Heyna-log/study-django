@@ -1,4 +1,5 @@
 from django.db import models
+import os
 
 class Post(models.Model):
     # 제목
@@ -33,3 +34,9 @@ class Post(models.Model):
 
     def get_absolute_url(self): # 각 포스트 고유의 url 생성 (장고에서 기본 제공하는 기능)
         return f'/blog/{self.pk}/'
+
+    def get_file_name(self):
+        return os.path.basename(self.file_upload.name) # 파일 이름
+
+    def get_file_ext(self):
+        return self.get_file_name().split('.')[-1] # 파일 이름에서 확장자('.'으로 자른 배열의 마지막 인덱스) 가져오기
