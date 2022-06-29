@@ -92,7 +92,7 @@
                         <div class="card-body">
                           <!--<h3><a href="{{ i.pk }}">title : [{{ i.pk }}] {{ i.title }}</a></h3>-->
                         <h2 class="card-title">{{ p.title }}</h2>
-                        <p class="card-text">{{ p.content }}</p>
+                        <p class="card-text">{{ p.content | truncatewords:50 }}</p> <!-- truncatewords:n - 단어n개까지만 출력 / truncatechars:n - 글자n개까지만 출력 -->
                         <a href="{{ p.get_absolute_url }}" class="btn btn-primary">Read More &rarr;</a> <!-- .get_absolute_url : 장고에서 기본 제공. 하지만 models.py에서 정의를 해주어야 함 -->
                         </div>
                         <div class="card-footer text-muted">
