@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Blog</title>
-    <link href="{% static 'blog/css/index.css' %}" rel="stylesheet" type="text/css">
+<!--    <link href="{% static 'blog/css/index.css' %}" rel="stylesheet" type="text/css">-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 </head>
     <body>
@@ -85,9 +85,9 @@
                     <!-- Blog Post -->
                     <div class="card mb-4">
                         {% if p.head_image %}
-                            <img src="{{ p.head_image.url }}">
+                            <img class="card-img-top" src="{{ p.head_image.url }}">
                         {% else %}
-                            <img src="https://picsum.photos/seed/{{ p.pk }}/500/300"> <!-- 저장된 이미지가 없으면 랜덤 이미지 보여주기 / 참고 : https://picsum.photos/ -->
+                            <img class="card-img-top" src="https://picsum.photos/seed/{{ p.pk }}/500/300"> <!-- 저장된 이미지가 없으면 랜덤 이미지 보여주기 / 참고 : https://picsum.photos/ -->
                         {% endif %}
                         <div class="card-body">
                           <!--<h3><a href="{{ i.pk }}">title : [{{ i.pk }}] {{ i.title }}</a></h3>-->
