@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>{{ post.title }} - Blog</title>
+    <title>{{ object.title }} - Blog</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
@@ -43,7 +43,7 @@
         <!-- Post Content Column -->
         <div class="col-lg-8" id="main-area">
             <!-- Title -->
-            <h1 class="mt-4">{{ post.title }}</h1>
+            <h1 class="mt-4">{{ object.title }}</h1>
 
             <!-- Author -->
             <p class="lead">
@@ -59,7 +59,7 @@
             <hr>
 
             <!-- Preview Image -->
-            <!-- DetailView에서는 기본적으로 'model명'을 context 변수명으로 사용 -->
+            <!-- DetailView에서는 기본적으로 <model명 소문자> 또는 'object'를 context 변수명으로 사용 -->
             {% if post.head_image %}
             <img class="img-fluid rounded" src="{{ post.head_image.url }}">
             {% else %}
