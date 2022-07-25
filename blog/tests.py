@@ -1,4 +1,5 @@
 from django.test import TestCase, Client # Client : 웹사이트를 방문하는 사람의 브라우저
+from django.contrib.auth.models import User
 from bs4 import BeautifulSoup
 from .models import Post
 
@@ -6,6 +7,14 @@ from .models import Post
 class TestView(TestCase):
     def setUp(self):
         self.client = Client()
+        self.user_test1 = User.objects.create_user(
+            username='test1',
+            password='1111'
+        )
+        self.user_test2 = User.objects.create_user(
+            username='test2',
+            password='1111'
+        )
 
     def navbar_test(self, soup):
         # 1-1. NavBar가 있다.
@@ -28,7 +37,7 @@ class TestView(TestCase):
         self.assertEqual(about_me_btn.attrs['href'], '/about_me/')
 
     # 'test_'로 시작하는 함수는 unit test로 인식됨
-    # 현재 데이터베이스와 전혀 상관없는 테스트용 새로운 데이터베이스가 만들어짐
+    # 현재 데이터베이스와 전혀 상관없는 테스트용 새로운 데이터베이스가 만들어짐[setUp(self) 기반]
     def test_post_list(self):
         # 1-1. 포스트 목록 페이지(post_list)를 연다.
         response = self.client.get('/blog/')
@@ -55,34 +64,42 @@ class TestView(TestCase):
             # Post 모델에 기반한 테스트 게시물 작성
             title='첫번째 포스트 제목',
             content='첫번째 포스트 내용',
+            author=self.user_test1,
         )
         post_002 = Post.objects.create(
             # Post 모델에 기반한 테스트 게시물 작성
             title='두번째 포스트 제목',
             content='두번째 포스트 내용',
+            author=self.user_test2,
         )
         self.assertEqual(Post.objects.count(), 2)
 
         # 3-2. 포스트 목록 페이지를 새로 고침 했을 때,
         response = self.client.get('/blog/')
 
-        # 3-3. 메인 영역에 포스트 2개의 타이틀이 존재한다.
+        # 3-3. 메인 영역에 포스트 2개의 타이틀과 작성자(대문자)가 존재한다.
         soup = BeautifulSoup(response.content, 'html.parser')
         main_area = soup.find('div', id='main-area')
         self.assertIn(post_001.title, main_area.text)
         self.assertIn(post_002.title, main_area.text)
+        self.assertIn(post_001.author.username.upper(), main_area.text) # upper() : 대문자로 출력
+        self.assertIn(post_002.author.username.upper(), main_area.text)
 
         # 3-4. "아직 게시물이 없습니다." 라는 문구가 없어야 한다.
         self.assertNotIn('아직 게시물이 없습니다.', main_area.text) # assertNotIn(a,b) => b안에 a가 없다.
 
+        print('post_list test 완료')
+
+
     # 'test_'로 시작하는 함수는 unit test로 인식됨
-    # 현재 데이터베이스와 전혀 상관없는 테스트용 새로운 데이터베이스가 만들어짐
+    # 현재 데이터베이스와 전혀 상관없는 테스트용 새로운 데이터베이스가 만들어짐[setUp(self) 기반]
     def test_post_detail(self):
         # 1-1. 포스트가 하나 있다.
         post_001 = Post.objects.create(
             # Post 모델에 기반한 테스트 게시물 작성
             title='첫번째 포스트 제목',
             content='첫번째 포스트 내용',
+            author=self.user_test1,
         )
         self.assertEqual(Post.objects.count(), 1)
 
@@ -106,7 +123,10 @@ class TestView(TestCase):
         post_area = main_area.find('div', id='post-area')
         self.assertIn(post_001.title, post_area.text)
 
-        # 2-5. 첫번째 포스트의 작성자(author)가 포스트 영역에 있다. (아직 구현할 수 없음)
+        # 2-5. 첫번째 포스트의 작성자(author, 대문자)가 포스트 영역에 있다.
+        self.assertIn(post_001.author.username.upper(), post_area.text)
 
         # 2-6. 첫번째 포스트의 내용(content)이 포스트 영역에 있다.
         self.assertIn(post_001.content, post_area.text)
+
+        print('post_detail test 완료')
