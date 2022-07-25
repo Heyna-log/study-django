@@ -31,7 +31,8 @@ class Post(models.Model):
     # 작성자
     # 다대일 관계
     # on_delete=models.CASCADE : ForeignKeyField가 바라보는 값이 삭제될 때 ForeignKeyField를 포함하는 모델 인스턴스(row)도 삭제됨.
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    # on_delete=models.SET_NULL : ForeignKeyField가 바라보는 값이 삭제될 때 ForeignKeyField값을 null로 바꾼다. (null=True일 때만 가능)
+    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     def __str__(self): # __str__ : 출력 시 문자열로 나옴
         return f'[{self.pk}] {self.title} - {self.author}' # f'{}' -> 포메팅
