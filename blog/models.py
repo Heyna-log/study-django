@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 import os
 
 class Post(models.Model):
@@ -27,10 +28,13 @@ class Post(models.Model):
     # auto_now=True : 이미 생성되어 있고 업데이트하는 경우 수정할 때의 현재 시간을 자동으로 입력
     updated_at = models.DateTimeField(auto_now=True)
 
-    # author : 추후 작성 예정
+    # 작성자
+    # 다대일 관계
+    # on_delete=models.CASCADE : ForeignKeyField가 바라보는 값이 삭제될 때 ForeignKeyField를 포함하는 모델 인스턴스(row)도 삭제됨.
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self): # __str__ : 출력 시 문자열로 나옴
-        return f'[{self.pk}] {self.title}' # f'{}' -> 포메팅인가..?
+        return f'[{self.pk}] {self.title} - {self.author}' # f'{}' -> 포메팅
 
     def get_absolute_url(self): # 각 포스트 고유의 url 생성 (장고에서 기본 제공하는 기능)
         return f'/blog/{self.pk}/'
