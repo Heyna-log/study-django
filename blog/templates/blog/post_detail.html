@@ -1,230 +1,110 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ object.title }} - Blog</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="#">Do It Django</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/about_me/">About me</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/blog/">Blog</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+{% extends 'blog/base.html' %}
 
-<!-- Page Content -->
-<div class="container">
+{% block head_title %}
+{{ post.title }} - Blog
+{% endblock %}
 
-    <div class="row">
+{% block main_area %}
+<div id="post-area">
+    <!-- Title -->
+    <h1 class="mt-4">{{ object.title }}</h1>
 
-        <!-- Post Content Column -->
-        <div class="col-lg-8" id="main-area">
-            <!-- Title -->
-            <h1 class="mt-4">{{ object.title }}</h1>
+    <!-- Author -->
+    <p class="lead">
+        by
+        <a href="#">작성자명 쓸 위치(개발예정)</a>
+    </p>
 
-            <!-- Author -->
-            <p class="lead">
-                by
-                <a href="#">작성자명 쓸 위치(개발예정)</a>
-            </p>
+    <hr>
 
-            <hr>
+    <!-- Date/Time -->
+    <p>Posted on {{ post.created_at }}</p>
 
-            <!-- Date/Time -->
-            <p>Posted on {{ post.created_at }}</p>
+    <hr>
 
-            <hr>
+    <!-- Preview Image -->
+    <!-- DetailView에서는 기본적으로 <model명 소문자> 또는 'object'를 context 변수명으로 사용 -->
+    {% if post.head_image %}
+    <img class="img-fluid rounded" src="{{ post.head_image.url }}">
+    {% else %}
+    <img class="img-fluid rounded" src="https://picsum.photos/seed/{{ post.pk }}/500/300"> <!-- 저장된 이미지가 없으면 랜덤 이미지 보여주기 / 참고 : https://picsum.photos/ -->
+    {% endif %}
 
-            <!-- Preview Image -->
-            <!-- DetailView에서는 기본적으로 <model명 소문자> 또는 'object'를 context 변수명으로 사용 -->
-            {% if post.head_image %}
-            <img class="img-fluid rounded" src="{{ post.head_image.url }}">
-            {% else %}
-            <img class="img-fluid rounded" src="https://picsum.photos/seed/{{ post.pk }}/500/300"> <!-- 저장된 이미지가 없으면 랜덤 이미지 보여주기 / 참고 : https://picsum.photos/ -->
-            {% endif %}
+    <hr>
 
-            <hr>
+    <!-- Post Content -->
+    <p>{{ post.content }}</p>
 
-            <!-- Post Content -->
-            <p>{{ post.content }}</p>
-
-            <!-- File Download Button -->
-            {% if post.file_upload %}
-                <a href="{{ post.file_upload.url }}" class="btn btn-outline-primary" role="button" download>
-                    Download :
-                    {% if post.get_file_ext == 'xlsx' or post.get_file_ext == 'xls' %}
-                        <i class="fa-regular fa-file-excel"></i>
-                    {% elif post.get_file_ext == 'docx' %}
-                        <i class="fa-regular fa-file-word"></i>
-                    {% elif post.get_file_ext == 'pdf' %}
-                        <i class="fa-regular fa-file-pdf"></i>
-                    {% elif post.get_file_ext == 'png' or post.get_file_ext == 'jpg' or post.get_file_ext == 'jpeg' or post.get_file_ext == 'svg' %}
-                        <i class="fa-regular fa-image"></i>
-                    {% elif post.get_file_ext == 'csv' %}
-                        <i class="fa-regular fa-file-csv"></i>
-                    {% else %}
-                        <i class="fa-regular fa-file-lines"></i>
-                    {% endif %}
-                    {{ post.get_file_name }}
-                </a>
-            {% endif %}
-            <hr>
-            <!-- Comments Form -->
-            <div class="card my-4">
-                <h5 class="card-header">Leave a Comment:</h5>
-                <div class="card-body">
-                    <form>
-                        <div class="form-group">
-                            <textarea class="form-control" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Single Comment -->
-            <div class="media mb-4">
-                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                <div class="media-body">
-                    <h5 class="mt-0">Commenter Name</h5>
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                </div>
-            </div>
-
-            <!-- Comment with nested comments -->
-            <div class="media mb-4">
-                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                <div class="media-body">
-                    <h5 class="mt-0">Commenter Name</h5>
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-
-                    <div class="media mt-4">
-                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                        <div class="media-body">
-                            <h5 class="mt-0">Commenter Name</h5>
-                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                        </div>
-                    </div>
-
-                    <div class="media mt-4">
-                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                        <div class="media-body">
-                            <h5 class="mt-0">Commenter Name</h5>
-                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Sidebar Widgets Column -->
-        <div class="col-md-4">
-
-            <!-- Search Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Search</h5>
-                <div class="card-body">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-append">
-                <button class="btn btn-secondary" type="button">Go!</button>
-              </span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Categories Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Categories</h5>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#">Web Design</a>
-                                </li>
-                                <li>
-                                    <a href="#">HTML</a>
-                                </li>
-                                <li>
-                                    <a href="#">Freebies</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#">JavaScript</a>
-                                </li>
-                                <li>
-                                    <a href="#">CSS</a>
-                                </li>
-                                <li>
-                                    <a href="#">Tutorials</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Side Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Side Widget</h5>
-                <div class="card-body">
-                    You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-    <!-- /.row -->
-
+    <!-- File Download Button -->
+    {% if post.file_upload %}
+    <a href="{{ post.file_upload.url }}" class="btn btn-outline-primary" role="button" download>
+        Download :
+        {% if post.get_file_ext == 'xlsx' or post.get_file_ext == 'xls' %}
+        <i class="fa-regular fa-file-excel"></i>
+        {% elif post.get_file_ext == 'docx' %}
+        <i class="fa-regular fa-file-word"></i>
+        {% elif post.get_file_ext == 'pdf' %}
+        <i class="fa-regular fa-file-pdf"></i>
+        {% elif post.get_file_ext == 'png' or post.get_file_ext == 'jpg' or post.get_file_ext == 'jpeg' or post.get_file_ext == 'svg' %}
+        <i class="fa-regular fa-image"></i>
+        {% elif post.get_file_ext == 'csv' %}
+        <i class="fa-regular fa-file-csv"></i>
+        {% else %}
+        <i class="fa-regular fa-file-lines"></i>
+        {% endif %}
+        {{ post.get_file_name }}
+    </a>
+    {% endif %}
+    <hr>
 </div>
-<!-- /.container -->
 
-<!-- Footer -->
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
+<div id="comment-area">
+    <!-- Comments Form -->
+    <div class="card my-4">
+        <h5 class="card-header">Leave a Comment:</h5>
+        <div class="card-body">
+            <form>
+                <div class="form-group">
+                    <textarea class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
     </div>
-    <!-- /.container -->
-</footer>
 
-<!-- Bootstrap core JavaScript -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
-        crossorigin="anonymous"></script>
+    <!-- Single Comment -->
+    <div class="media mb-4">
+        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+        <div class="media-body">
+            <h5 class="mt-0">Commenter Name</h5>
+            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+        </div>
+    </div>
 
-</body>
+    <!-- Comment with nested comments -->
+    <div class="media mb-4">
+        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+        <div class="media-body">
+            <h5 class="mt-0">Commenter Name</h5>
+            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
 
-</html>
+            <div class="media mt-4">
+                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                <div class="media-body">
+                    <h5 class="mt-0">Commenter Name</h5>
+                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                </div>
+            </div>
+
+            <div class="media mt-4">
+                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                <div class="media-body">
+                    <h5 class="mt-0">Commenter Name</h5>
+                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
