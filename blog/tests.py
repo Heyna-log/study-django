@@ -69,7 +69,22 @@ class TestView(TestCase):
         about_me_btn = navbar.find('a', text='About me')
         self.assertEqual(about_me_btn.attrs['href'], '/about_me/')
 
-    # 'test_'로 시작하는 함수는 unit test로 인식됨
+    def categories_card_test(self, soup):
+        # 1-1. 카테고리 카드 영역에 'Categories'가 있다.
+        categories_card = soup.find('div', id='categories-card')
+        self.assertIn('Categories', categories_card.text)
+
+        # 2-1. 게시물이 1개 이상 있을 때,
+        # self.assertGreaterEqual(Post.objects.count(), 1)
+
+        # 2-2. 카테고리 카드 영역에 '카테고리 이름 (해당 카테고리 게시물 개수)'가 있다.
+        # 등록된 카테고리 일 때
+        for i in Category.objects.all():
+            self.assertIn(f'{i} ({i.post_set.count()})', categories_card.text)
+        # 등록 안 된 카테고리 일 때
+        self.assertIn(f'미분류 ({Post.objects.filter(category=None).count()})', categories_card.text)
+
+    # 'test_' 시작하는 함수는 unit test로 인식됨
     # 현재 데이터베이스와 전혀 상관없는 테스트용 새로운 데이터베이스가 만들어짐[setUp(self) 기반]
     def test_post_list_with_posts(self):
         # 1. 게시물이 존재한다.
@@ -81,21 +96,33 @@ class TestView(TestCase):
         # 2-2. 정상적으로 페이지가 로드된다.
         self.assertEqual(response.status_code, 200) # assertEqual(a,b) => a와 b가 같다.
 
-        # 3-1. navbar 테스트
+        # 3-1. navbar, categories_card 테스트
         soup = BeautifulSoup(response.content, 'html.parser')  # response의 내용물이 html임을 알려줌
         self.navbar_test(soup)
+        self.categories_card_test(soup)
 
         # 3-2. 페이지의 타이틀에 Blog라는 문구가 있다.
         self.assertIn('Blog', soup.title.text) # assertIn(a,b) => b안에 a가 있다.
 
-        # 3-3. 메인 영역에 게시물의 타이틀과 작성자(대문자)가 존재한다.
+        # 3-3. 메인 영역에 "아직 게시물이 없습니다." 라는 문구가 없어야 한다.
         main_area = soup.find('div', id='main-area')
-        for i in Post.objects.all():
-            self.assertIn(i.title, main_area.text)
-            self.assertIn(i.author.username.upper(), main_area.text) # upper() : 대문자로 출력
+        self.assertNotIn('아직 게시물이 없습니다.', main_area.text)  # assertNotIn(a,b) => b안에 a가 없다.
 
-        # 3-4. 메인 영역에 "아직 게시물이 없습니다." 라는 문구가 없어야 한다.
-        self.assertNotIn('아직 게시물이 없습니다.', main_area.text) # assertNotIn(a,b) => b안에 a가 없다.
+        # 3-4. 각각의 포스트 카드 영역에 게시물의 타이틀, 작성자(대문자), 카테고리 이름이 존재한다.
+        num = 0 # 변수 선언을 위한 카운트
+        for i in Post.objects.all():
+            num = num + 1
+            globals()['post_card_{}_area'.format(num)] = main_area.find('div', id='post_card_{}'.format(num)) # 동적 변수 생성
+            card_area = globals()['post_card_{}_area'.format(num)]
+            # 타이틀 유무 확인
+            self.assertIn(i.title, card_area.text)
+            # 작성자(대문자) 유무 확인
+            self.assertIn(i.author.username.upper(), card_area.text) # upper() : 대문자로 출력
+            # 카테고리 이름 유무 확인
+            if i.category in Category.objects.all():  # Category 안에 i.category가 있으면 True
+                self.assertIn(i.category.name, card_area.text)  # 카테고리 이름 유무 확인
+            elif i.category is None:  # 카테고리가 등록 안 된 게시물일 경우(category는 null=True, blank=True 이므로)
+                self.assertIn('미분류', card_area.text)
 
         print('test_post_list_with_posts 완료')
 
@@ -112,9 +139,10 @@ class TestView(TestCase):
         # 2-2. 정상적으로 페이지가 로드된다.
         self.assertEqual(response.status_code, 200)
 
-        # 3-1. navbar 테스트
+        # 3-1. navbar, categories_card 테스트
         soup = BeautifulSoup(response.content, 'html.parser')
         self.navbar_test(soup)
+        self.categories_card_test(soup)
 
         # 3-2. 페이지의 타이틀에 Blog라는 문구가 있다.
         self.assertIn('Blog', soup.title.text)
